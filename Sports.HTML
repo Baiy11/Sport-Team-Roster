@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pick a Sport</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    .sport-btn {
+      background: #3498db; color: white; padding: 10px 20px; border: none;
+      margin: 10px; border-radius: 5px; cursor: pointer;
+    }
+    .team {
+      margin-top: 30px; background: #fff; padding: 15px;
+      border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 8px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Select a Sport</h1>
+  <button class="sport-btn" onclick="showSport('Basketball')">Basketball</button>
+  <button class="sport-btn" onclick="showSport('Soccer')">Soccer</button>
+
+  <div id="teamsContainer"></div>
+
+  <script>
+    const teams = {
+      Basketball: [
+        { team: 'Thunderbolts', players: [
+          { name: 'John Doe', pos: 'Point Guard', num: 7, email: 'johndoe@email.com' },
+          { name: 'Mike Smith', pos: 'Center', num: 34, email: 'mikesmith@email.com' }
+        ]}
+      ],
+      Soccer: [
+        { team: 'Hurricanes', players: [
+          { name: 'Sarah Lee', pos: 'Forward', num: 10, email: 'sarahlee@email.com' },
+          { name: 'Emily Park', pos: 'Goalkeeper', num: 1, email: 'emilypark@email.com' }
+        ]}
+      ]
+    };
+
+    function showSport(sport) {
+      const container = document.getElementById('teamsContainer');
+      container.innerHTML = '';
+      teams[sport].forEach(t => {
+        const teamHTML = `
+          <div class="team">
+            <h2>${t.team}</h2>
+            <table>
+              <tr><th>Name</th><th>Position</th><th>#</th><th>Email</th></tr>
+              ${t.players.map(p => `<tr>
+                <td>${p.name}</td><td>${p.pos}</td><td>${p.num}</td><td>${p.email}</td>
+              </tr>`).join('')}
+            </table>
+          </div>
+        `;
+        container.innerHTML += teamHTML;
+      });
+    }
+  </script>
+</body>
+</html>
