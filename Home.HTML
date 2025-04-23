@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    body { font-family: Arial; background: #f9f9f9; padding: 50px; text-align: center; }
+    .card {
+      background: white; padding: 20px; border-radius: 10px;
+      display: inline-block; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    a { text-decoration: none; color: blue; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome</h1>
+    <p id="userInfo"></p>
+    <a href="sports.html">Go to Sports Page →</a>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) window.location.href = 'login.html';
+    else document.getElementById('userInfo').innerText = `Name: ${user.name}, Email: ${user.email}`;
+  </script>
+</body>
+</html>
