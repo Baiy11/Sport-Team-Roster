@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile</title>
+  <style>
+    body { font-family: Arial; background: #f6f6f6; padding: 40px; text-align: center; }
+    .profile-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    .info { font-size: 18px; margin: 10px 0; }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <h1>Your Profile</h1>
+    <div class="info" id="name"></div>
+    <div class="info" id="email"></div>
+    <div class="info" id="sportPref"></div>
+    <a href="home.html">← Back to Home</a>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('name').textContent = `Name: ${user.name}`;
+      document.getElementById('email').textContent = `Email: ${user.email}`;
+      document.getElementById('sportPref').textContent = user.sport ? `Preferred Sport: ${user.sport}` : '';
+    }
+  </script>
+</body>
+</html>
