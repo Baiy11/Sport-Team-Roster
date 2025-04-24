@@ -111,7 +111,17 @@
       localStorage.setItem('user', JSON.stringify(user));
 
       alert(isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
+
+      // Redirect to home page
       window.location.href = 'home.html';
+    }
+
+    // Optional: Check if already logged in and redirect
+    window.onload = () => {
+      const existingUser = JSON.parse(localStorage.getItem('user'));
+      if (existingUser && existingUser.username) {
+        window.location.href = 'home.html';
+      }
     }
   </script>
 </body>
