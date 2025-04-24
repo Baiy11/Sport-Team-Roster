@@ -2,29 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up</title>
   <style>
-    body { font-family: Arial; background: #eef; padding: 50px; text-align: center; }
-    input { margin: 10px; padding: 10px; width: 200px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #555;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 15px;
+      color: #007bff;
+      cursor: pointer;
+    }
+    .toggle:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>Login</h1>
-  <form onsubmit="handleLogin(event)">
-    <input type="text" id="username" placeholder="Enter your name" required><br>
-    <input type="email" id="email" placeholder="Enter your email" required><br>
-    <button type="submit">Login</button>
-  </form>
+  <div class="card">
+    <h2 id="formTitle">Login</h2>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username">
+    </div>
+    <div class="form-group" id="emailGroup" style="display: none;">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+    <button onclick="submitForm()" id="submitButton">Login</button>
+    <div class="toggle" onclick="toggleForm()">Don't have an account? Sign up</div>
+  </div>
 
   <script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const name = document.getElementById('username').value;
-      const email = document.getElementById('email').value;
-      localStorage.setItem('user', JSON.stringify({ name, email }));
+    let isSignUp = false;
+
+    function toggleForm() {
+      isSignUp = !isSignUp;
+      document.getElementById('formTitle').innerText = isSignUp ? 'Sign Up' : 'Login';
+      document.getElementById('submitButton').innerText = isSignUp ? 'Sign Up' : 'Login';
+      document.getElementById('emailGroup').style.display = isSignUp ? 'block' : 'none';
+      document.querySelector('.toggle').innerText = isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign up";
+    }
+
+    function submitForm() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!username || !password || (isSignUp && !email)) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      let user = {
+        username,
+        password,
+        email: isSignUp ? email : undefined
+      };
+
+      localStorage.setItem('user', JSON.stringify(user));
+
+      alert(isSignUp ? 'Account created successfully!' : 'Logged in successfully!');
       window.location.href = 'home.html';
     }
   </script>
 </body>
 </html>
-
