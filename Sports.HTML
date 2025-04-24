@@ -1,112 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>School Sports</title>
-  <style>
-    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-    h1 { text-align: center; }
-    .button-group, .sport-buttons { text-align: center; margin: 20px 0; }
-    button {
-      background: #3498db; color: white; padding: 10px 15px;
-      border: none; margin: 5px; border-radius: 5px; cursor: pointer;
-    }
-    .team {
-      margin-top: 30px; background: #fff; padding: 15px;
-      border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 8px; border: 1px solid #ccc; }
-  </style>
-</head>
-<body>
-
-<h1>Select Season and Sport</h1>
-
-<div class="button-group">
-  <button onclick="showSeason('Spring')">Spring</button>
-  <button onclick="showSeason('Summer')">Summer</button>
-  <button onclick="showSeason('Autumn')">Autumn</button>
-  <button onclick="showSeason('Winter')">Winter</button>
-</div>
-
-<div class="sport-buttons" id="sportsList"></div>
-<div id="teamsContainer"></div>
-
-<script>
-const sportsBySeason = {
-  Spring: ['Baseball', 'Softball', 'Track & Field', 'Tennis (Boys)', 'Lacrosse', 'Golf (Boys)'],
-  Summer: ['Summer Basketball', 'Football Conditioning', 'Track Camp'],
-  Autumn: ['Football', 'Volleyball', 'Cross Country', 'Soccer (Boys)', 'Golf (Girls)', 'Field Hockey'],
-  Winter: ['Basketball', 'Wrestling', 'Ice Hockey', 'Indoor Track', 'Swimming (Boys)']
+const sportDescriptions = {
+  'Baseball': 'A bat-and-ball game played between two teams who take turns batting and fielding.',
+  'Softball': 'Similar to baseball, but played with a larger ball on a smaller field.',
+  'Track & Field': 'A collection of running, jumping, and throwing events.',
+  'Tennis (Boys)': 'A racket sport played on a court with a net.',
+  'Lacrosse': 'A fast-paced team sport played with a stick and small rubber ball.',
+  'Golf (Boys)': 'A precision club-and-ball sport on a large course.',
+  'Summer Basketball': 'Off-season hoops for skills and fun.',
+  'Football Conditioning': 'Training to improve strength, agility, and teamwork.',
+  'Track Camp': 'Athletic development in track events.',
+  'Football': 'A full-contact sport focused on strategy, speed, and strength.',
+  'Volleyball': 'A team sport where players use their hands to hit a ball over a net.',
+  'Cross Country': 'Long-distance running across open terrain.',
+  'Soccer (Boys)': 'A sport where players aim to score by kicking a ball into the opponent’s goal.',
+  'Golf (Girls)': 'Same rules as boys, but often a separate league.',
+  'Field Hockey': 'Team sport played with curved sticks and a ball.',
+  'Basketball': 'Fast-paced indoor sport involving dribbling, passing, and shooting.',
+  'Wrestling': 'One-on-one physical competition aiming to pin the opponent.',
+  'Ice Hockey': 'A fast, physical sport played on ice with skates and sticks.',
+  'Indoor Track': 'Track events held indoors, often during winter.',
+  'Swimming (Boys)': 'Competitive races in water using different strokes.'
 };
-
-const teams = {
-  'Basketball': [
-    { team: 'Thunderbolts', players: [{ name: 'John Doe', pos: 'Point Guard', num: 7, email: 'john@email.com' }] }
-  ],
-  'Football': [
-    { team: 'Gridiron Giants', players: [{ name: 'Jake Miles', pos: 'Quarterback', num: 12, email: 'jake@email.com' }] }
-  ],
-  'Baseball': [
-    { team: 'Wild Hawks', players: [{ name: 'Rick Stone', pos: 'Pitcher', num: 12, email: 'rick@email.com' }] }
-  ],
-  'Softball': [
-    { team: 'Diamond Queens', players: [{ name: 'Liz Hart', pos: 'Catcher', num: 9, email: 'liz@email.com' }] }
-  ],
-  'Volleyball': [
-    { team: 'Spike Stars', players: [{ name: 'Nina Hart', pos: 'Setter', num: 7, email: 'nina@email.com' }] }
-  ],
-  'Track & Field': [
-    { team: 'Speed Force', players: [{ name: 'Carlos Ray', pos: 'Sprinter', num: 22, email: 'carlos@email.com' }] }
-  ],
-  'Tennis (Boys)': [
-    { team: 'Net Kings', players: [{ name: 'Leo Kim', pos: 'Singles', num: 1, email: 'leo@email.com' }] }
-  ],
-  'Lacrosse': [
-    { team: 'Stick Masters', players: [{ name: 'Kyle Joe', pos: 'Midfield', num: 5, email: 'kyle@email.com' }] }
-  ],
-  'Swimming (Boys)': [
-    { team: 'Wave Riders', players: [{ name: 'Max Water', pos: 'Freestyle', num: 8, email: 'max@email.com' }] }
-  ]
-};
-
-function showSeason(season) {
-  const sportButtons = sportsBySeason[season].map(sport =>
-    `<button onclick="showSport('${sport}')">${sport}</button>`
-  ).join('');
-  document.getElementById('sportsList').innerHTML = sportButtons;
-  document.getElementById('teamsContainer').innerHTML = ''; // clear previous team view
-}
 
 function showSport(sport) {
-  const teamData = teams[sport];
   const container = document.getElementById('teamsContainer');
-  container.innerHTML = '';
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+  const savedTeam = user.teams?.[sport] || '';
 
-  if (!teamData) {
-    container.innerHTML = `<p>No data for ${sport} yet.</p>`;
-    return;
-  }
-
-  teamData.forEach(t => {
-    const teamHTML = `
-      <div class="team">
-        <h2>${t.team}</h2>
-        <table>
-          <tr><th>Name</th><th>Position</th><th>#</th><th>Email</th></tr>
-          ${t.players.map(p => `<tr>
-            <td>${p.name}</td><td>${p.pos}</td><td>${p.num}</td><td>${p.email}</td>
-          </tr>`).join('')}
-        </table>
-      </div>
-    `;
-    container.innerHTML += teamHTML;
-  });
+  container.innerHTML = `
+    <div class="team">
+      <h2>${sport}</h2>
+      <p>${sportDescriptions[sport] || 'No description available.'}</p>
+      <label for="teamInput">Enter your team name:</label><br>
+      <input type="text" id="teamInput" value="${savedTeam}" placeholder="Ex: Wild Hawks" />
+      <button onclick="saveTeam('${sport}')">Save My Team</button>
+    </div>
+  `;
 }
 
-// Optional: Load preferred sport from user data
-const user = JSON.parse(localStorage.getItem('user'));
+function saveTeam(sport) {
+  const input = document.getElementById('teamInput').value.trim();
+  if (!input) return alert('Please enter a team name.');
+
+  let user = JSON.parse(localStorage.getItem('user')) || {};
+  user.teams = user.teams || {};
+  user.teams[sport] = input;
+  localStorage.setItem('user', JSON.stringify(user));
+
+  alert(`Team "${input}" saved for ${sport}!`);
+}
+
 if (user && user.sport) showSport(user.sport);
 </script>
 
